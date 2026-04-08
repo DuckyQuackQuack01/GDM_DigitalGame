@@ -1,7 +1,5 @@
 using UnityEngine;
 
-
-
 public class SlingshotMechanic : MonoBehaviour
 {
     public GameObject fellPopup;
@@ -17,15 +15,24 @@ public class SlingshotMechanic : MonoBehaviour
 
     private GameObject[] dots;
     private Rigidbody2D rb;
+
     private Vector2 startPos;
+    private Vector2 originalStartPos;
+
     private bool isDragging = false;
+
+    private bool onPlatform = false;
+    private MovingPlatform currentPlatform;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        startPos = transform.position;
 
-        // Create dots
+        rb.bodyType = RigidbodyType2D.Kinematic;
+
+        originalStartPos = transform.position;
+        startPos = originalStartPos;
+
         dots = new GameObject[dotCount];
         for (int i = 0; i < dotCount; i++)
         {
@@ -37,36 +44,56 @@ public class SlingshotMechanic : MonoBehaviour
     void OnMouseDown()
     {
         isDragging = true;
+
         rb.linearVelocity = Vector2.zero;
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.angularVelocity = 0f;
     }
 
-    void OnMouseDrag()
+    void Update()
     {
-        if (!isDragging) return;
+        if (onPlatform)
+        {
+            startPos = transform.position;
+        }
 
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 dragVector = mousePos - startPos;
+        if (isDragging)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 dragVector = mousePos - startPos;
 
-        dragVector = Vector2.ClampMagnitude(dragVector, maxDragDistance);
-        transform.position = startPos + dragVector;
+            dragVector = Vector2.ClampMagnitude(dragVector, maxDragDistance);
 
-        Vector2 launchDir = startPos - (Vector2)transform.position;
-        Vector2 velocity = launchDir * launchPower;
+            Vector2 launchDir = -dragVector;
+            Vector2 velocity = launchDir * launchPower;
 
-        DrawTrajectory(velocity);
+            DrawTrajectory(velocity);
+        }
     }
 
     void OnMouseUp()
     {
+        if (!isDragging) return;
         isDragging = false;
 
-        Vector2 launchDir = startPos - (Vector2)transform.position;
+        onPlatform = false;
+
+        if (currentPlatform != null)
+        {
+            currentPlatform.RestoreSpeed();
+            currentPlatform = null;
+        }
+
+        transform.SetParent(null);
+
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 dragVector = mousePos - startPos;
+        dragVector = Vector2.ClampMagnitude(dragVector, maxDragDistance);
+
+        Vector2 launchDir = -dragVector;
 
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.linearVelocity = launchDir * launchPower;
 
-        // Hide dots
         foreach (var dot in dots)
             dot.SetActive(false);
     }
@@ -89,30 +116,57 @@ public class SlingshotMechanic : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-   
-
-        // MISS: Hit the ground ? reset
         if (collision.collider.CompareTag("Ground"))
         {
-            Debug.Log("Missed the platform!");
-
             rb.linearVelocity = Vector2.zero;
-            transform.position = startPos;
+            rb.angularVelocity = 0f;
+
+            transform.position = originalStartPos;
+
             rb.bodyType = RigidbodyType2D.Kinematic;
 
             fellPopup.SetActive(true);
             Invoke("HideFellPopup", 1.5f);
+
+            startPos = originalStartPos;
+
+            transform.SetParent(null);
+
+            onPlatform = false;
+
+            if (currentPlatform != null)
+            {
+                currentPlatform.RestoreSpeed();
+                currentPlatform = null;
+            }
+
+            // ? RESET SCORE WHEN HITTING GROUND
+            ScoreManager.ResetScore();
         }
     }
-
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("PlatformTop"))
         {
-            Debug.Log("Landed on TOP!");
             rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+
             rb.bodyType = RigidbodyType2D.Kinematic;
+
+            transform.position += new Vector3(0, 0.02f, 0);
+
+            transform.SetParent(other.transform);
+
+            onPlatform = true;
+            startPos = transform.position;
+
+            // ? Add a point
+            ScoreManager.AddPoint();
+
+            currentPlatform = other.GetComponentInParent<MovingPlatform>();
+            if (currentPlatform != null)
+                currentPlatform.SlowDown();
         }
     }
 
@@ -121,3 +175,7 @@ public class SlingshotMechanic : MonoBehaviour
         fellPopup.SetActive(false);
     }
 }
+
+
+
+
