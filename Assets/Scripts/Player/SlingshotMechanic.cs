@@ -158,6 +158,7 @@ public class SlingshotMechanic : MonoBehaviour
 
             // ? RESET SCORE WHEN HITTING GROUND
             ScoreManager.ResetScore();
+            LevelEntryState.playIntro = false;
         }
     }
 
