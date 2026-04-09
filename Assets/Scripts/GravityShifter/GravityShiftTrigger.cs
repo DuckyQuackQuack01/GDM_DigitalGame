@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GravityShiftTrigger : MonoBehaviour
@@ -34,24 +35,25 @@ public class GravityShiftTrigger : MonoBehaviour
                     other.transform.rotation *= Quaternion.Euler(0f, 0f, playerRotationAmount);
                 }
 
-                hasEntered = true;
+                //hasEntered = true;
             }
-            else
-            {
-                Physics2D.gravity = oldGravity;
+            
+            //else
+            //{
+            //    Physics2D.gravity = oldGravity;
 
-                if (cam != null)
-                {
-                    cam.RotateCamera(-cameraRotationAmount);
-                }
+            //    if (cam != null)
+            //    {
+            //        cam.RotateCamera(-cameraRotationAmount);
+            //    }
 
-                if (rotatePlayer)
-                {
-                    other.transform.rotation *= Quaternion.Euler(0f, 0f, -playerRotationAmount);
-                }
+            //    if (rotatePlayer)
+            //    {
+            //        other.transform.rotation *= Quaternion.Euler(0f, 0f, -playerRotationAmount);
+            //    }
 
-                hasEntered = false;
-            }
+            //    hasEntered = false;
+            //}
         }
     }
 

@@ -7,11 +7,14 @@ public class CameraMovement : MonoBehaviour
     public float rotationSpeed = 5f;
     public Vector3 offset = new Vector3(0, 0, -10);
 
+    private Quaternion defaultRotation;
+
     private bool isRotating = false;
     private Quaternion targetRotation;
     void Start()
     {
         targetRotation = transform.rotation;
+        defaultRotation = transform.rotation;
     }
     void LateUpdate()
     {
@@ -54,5 +57,12 @@ public class CameraMovement : MonoBehaviour
     {
         targetRotation = targetRotation * Quaternion.Euler(0f, 0f, angle);
         isRotating = true;
+    }
+
+    public void ResetCameraRotation()
+    {
+        transform.rotation = defaultRotation;
+        targetRotation = defaultRotation;
+        isRotating = false;
     }
 }

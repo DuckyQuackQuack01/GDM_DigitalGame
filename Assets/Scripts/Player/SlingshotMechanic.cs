@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SlingshotMechanic : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class SlingshotMechanic : MonoBehaviour
 
     private bool onPlatform = false;
     private MovingPlatform currentPlatform;
+
+    private Vector2 defaultGravity = new Vector2(0f, -9.8f);
+
+    public CameraMovement cameraMovement;
 
     void Start()
     {
@@ -67,6 +72,14 @@ public class SlingshotMechanic : MonoBehaviour
             Vector2 velocity = launchDir * launchPower;
 
             DrawTrajectory(velocity);
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Physics2D.gravity = defaultGravity;
+            ScoreManager.ResetScore();
         }
     }
 
@@ -139,6 +152,9 @@ public class SlingshotMechanic : MonoBehaviour
                 currentPlatform.RestoreSpeed();
                 currentPlatform = null;
             }
+
+            cameraMovement.ResetCameraRotation();
+            Physics2D.gravity = defaultGravity;
 
             // ? RESET SCORE WHEN HITTING GROUND
             ScoreManager.ResetScore();
