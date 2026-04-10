@@ -10,7 +10,12 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e03667f0-3601-4344-a36a-9c56e388500c" name="Changes" comment="" />
+    <list default="true" id="e03667f0-3601-4344-a36a-9c56e388500c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GDM_DigitalGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GDM_DigitalGame/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Sandstorm.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Sandstorm.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Sandstorm/Sandstorm.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Sandstorm/Sandstorm.cs.meta" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,7 +51,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "cidr.known.project.marker": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "Development",
+    "git-widget-placeholder": "Sandstorm2",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -101,7 +106,8 @@
       <option name="presentableId" value="Default" />
       <updated>1775619459438</updated>
       <workItem from="1775619461192" duration="1393000" />
-      <workItem from="1775690054199" duration="6656000" />
+      <workItem from="1775690054199" duration="7254000" />
+      <workItem from="1775781154504" duration="3419000" />
     </task>
     <servers />
   </component>
