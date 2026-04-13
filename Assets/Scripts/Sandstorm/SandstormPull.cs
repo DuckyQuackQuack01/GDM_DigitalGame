@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class SandstormPull : MonoBehaviour
+public class SandstormGravity : MonoBehaviour
 {
-    public float pullStrength = 20f;
+    public float gravityStrength = 20f;
 
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -12,12 +12,8 @@ public class SandstormPull : MonoBehaviour
 
             if (rb != null && rb.bodyType == RigidbodyType2D.Dynamic)
             {
-                Vector2 direction = (transform.position - other.transform.position).normalized;
-                float distance = Mathf.Max(Vector2.Distance(transform.position, other.transform.position), 0.5f);
-
-                float force = pullStrength / (distance * distance);
-
-                rb.AddForce(direction * force);
+                Vector2 direction = ((Vector2)transform.position - (Vector2)other.transform.position).normalized;
+                rb.AddForce(direction * gravityStrength);
             }
         }
     }
