@@ -25,10 +25,13 @@ public class SlingshotMechanic : MonoBehaviour
     private bool onPlatform = false;
     private MovingPlatform currentPlatform;
 
+    private Transform platformTransform;
+    private Vector3 lastPlatformPosition;
+
     private Vector2 defaultGravity = new Vector2(0f, -9.8f);
 
     public CameraMovement cameraMovement;
-
+    public SandstormGravity sandstorm;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -56,8 +59,12 @@ public class SlingshotMechanic : MonoBehaviour
 
     void Update()
     {
-        if (onPlatform)
+        if (onPlatform && platformTransform != null)
         {
+            Vector3 platformDelta = platformTransform.position - lastPlatformPosition;
+            transform.position += platformDelta;
+
+            lastPlatformPosition = platformTransform.position;
             startPos = transform.position;
         }
 
@@ -74,7 +81,6 @@ public class SlingshotMechanic : MonoBehaviour
             DrawTrajectory(velocity);
         }
 
-
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -89,14 +95,13 @@ public class SlingshotMechanic : MonoBehaviour
         isDragging = false;
 
         onPlatform = false;
+        platformTransform = null;
 
         if (currentPlatform != null)
         {
             currentPlatform.RestoreSpeed();
             currentPlatform = null;
         }
-
-        transform.SetParent(null);
 
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 dragVector = mousePos - startPos;
@@ -111,18 +116,26 @@ public class SlingshotMechanic : MonoBehaviour
             dot.SetActive(false);
     }
 
-    void DrawTrajectory(Vector2 velocity)
+    void DrawTrajectory(Vector2 initialVeclocity)
     {
+        Vector2 simPosition = startPos;
+        Vector2 simVelocity = initialVeclocity;
+        float timeStep = dotSpacing;
+       
         for (int i = 0; i < dotCount; i++)
         {
-            float t = i * dotSpacing;
+            Vector2 totalAcceleration = Physics2D.gravity * rb.gravityScale;
+            
+            if(sandstorm != null)
+            {
+                Vector2 force = sandstorm.GetForceAtPosition(simPosition);
+                totalAcceleration += force / rb.mass;
+            }
 
-            Vector2 pos =
-                startPos +
-                velocity * t +
-                0.5f * Physics2D.gravity * t * t;
+            simVelocity += totalAcceleration * timeStep;
+            simPosition += simVelocity * timeStep;
 
-            dots[i].transform.position = pos;
+            dots[i].transform.position = simPosition;
             dots[i].SetActive(true);
         }
     }
@@ -143,9 +156,8 @@ public class SlingshotMechanic : MonoBehaviour
 
             startPos = originalStartPos;
 
-            transform.SetParent(null);
-
             onPlatform = false;
+            platformTransform = null;
 
             if (currentPlatform != null)
             {
@@ -156,7 +168,6 @@ public class SlingshotMechanic : MonoBehaviour
             cameraMovement.ResetCameraRotation();
             Physics2D.gravity = defaultGravity;
 
-            // ? RESET SCORE WHEN HITTING GROUND
             ScoreManager.ResetScore();
             LevelEntryState.playIntro = false;
         }
@@ -173,17 +184,24 @@ public class SlingshotMechanic : MonoBehaviour
 
             transform.position += new Vector3(0, 0.02f, 0);
 
-            transform.SetParent(other.transform);
-
             onPlatform = true;
-            startPos = transform.position;
-
-            // ? Add a point
-            ScoreManager.AddPoint();
 
             currentPlatform = other.GetComponentInParent<MovingPlatform>();
             if (currentPlatform != null)
+            {
                 currentPlatform.SlowDown();
+                platformTransform = currentPlatform.transform;
+                lastPlatformPosition = platformTransform.position;
+            }
+            else
+            {
+                platformTransform = other.transform;
+                lastPlatformPosition = platformTransform.position;
+            }
+
+            startPos = transform.position;
+
+            ScoreManager.AddPoint();
         }
     }
 
