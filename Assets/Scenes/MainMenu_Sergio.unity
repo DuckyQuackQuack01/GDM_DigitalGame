@@ -559,7 +559,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 600, y: -223}
+  m_AnchoredPosition: {x: 600, y: -246}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &194614568
@@ -586,8 +586,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b04d05af9c0d1ae49a3dbdbf6702ce6c, type: 2}
-  m_sharedMaterial: {fileID: 2406340668041004536, guid: b04d05af9c0d1ae49a3dbdbf6702ce6c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c0207198af9a54d4fbebbf4b37a390f9, type: 2}
+  m_sharedMaterial: {fileID: 2406340668041004536, guid: c0207198af9a54d4fbebbf4b37a390f9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -611,8 +611,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5978,8 +5978,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: The Lost Axolotl
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b04d05af9c0d1ae49a3dbdbf6702ce6c, type: 2}
-  m_sharedMaterial: {fileID: 2406340668041004536, guid: b04d05af9c0d1ae49a3dbdbf6702ce6c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c0207198af9a54d4fbebbf4b37a390f9, type: 2}
+  m_sharedMaterial: {fileID: 2406340668041004536, guid: c0207198af9a54d4fbebbf4b37a390f9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6003,8 +6003,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 150
+  m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6042,7 +6042,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -412.55045, y: 0, z: -418.72534, w: -125.69765}
+  m_margin: {x: -412.55045, y: 0, z: -540.472, w: -125.69765}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
